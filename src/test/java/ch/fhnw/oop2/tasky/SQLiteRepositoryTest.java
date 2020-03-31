@@ -1,6 +1,5 @@
-package ch.fhnw.oop2.tasky.model.impl.test;
+package ch.fhnw.oop2.tasky;
 
-import ch.fhnw.oop2.tasky.model.impl.InMemoryMapRepository;
 import ch.fhnw.oop2.tasky.model.impl.SQLite;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

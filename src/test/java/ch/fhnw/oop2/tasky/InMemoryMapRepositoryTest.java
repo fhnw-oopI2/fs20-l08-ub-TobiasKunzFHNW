@@ -1,9 +1,8 @@
-package ch.fhnw.oop2.tasky.model.impl.test;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+package ch.fhnw.oop2.tasky;
 
 import ch.fhnw.oop2.tasky.model.impl.InMemoryMapRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 public class InMemoryMapRepositoryTest extends RepositoryTest {
 	

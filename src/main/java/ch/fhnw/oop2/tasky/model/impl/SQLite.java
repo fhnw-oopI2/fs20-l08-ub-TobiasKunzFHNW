@@ -25,11 +25,11 @@ public class SQLite implements Repository {
 	}
 
 	private Connection conn;
-	private int nextId;
+	private int currentId;
 
 	public SQLite(Database database) {
 		conn = connect(database);
-		nextId = getID(conn);
+		currentId = getID(conn);
 	}
 
 	public void setUp() {
@@ -41,7 +41,7 @@ public class SQLite implements Repository {
 
 	@Override
 	public Task create(TaskData data) {
-		Task newTask = new Task(nextId++, data);
+		Task newTask = new Task(++currentId, data);
 		insert(conn, newTask);
 		return newTask;
 	}
@@ -96,11 +96,11 @@ public class SQLite implements Repository {
 	 * @return ID of the last element in the table
 	 */
 	private static int getID(Connection conn) {
-		String sql = "SELECT last_insert_rowid()";
+		String sql = "SELECT MAX(id) FROM Tasks";
 
 		try {
 			Statement stmt = conn.createStatement();
-			return stmt.executeUpdate(sql);
+			return stmt.executeQuery(sql).getInt(1);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

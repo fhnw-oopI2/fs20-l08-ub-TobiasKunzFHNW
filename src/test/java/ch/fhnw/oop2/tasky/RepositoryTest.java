@@ -1,21 +1,15 @@
-package ch.fhnw.oop2.tasky.model.impl.test;
+package ch.fhnw.oop2.tasky;System.out.println(currentId);
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import ch.fhnw.oop2.tasky.model.Repository;
+import ch.fhnw.oop2.tasky.model.State;
+import ch.fhnw.oop2.tasky.model.Task;
+import ch.fhnw.oop2.tasky.model.TaskData;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import ch.fhnw.oop2.tasky.model.Repository;
-import ch.fhnw.oop2.tasky.model.State;
-import org.junit.jupiter.api.Test;
-
-import ch.fhnw.oop2.tasky.model.Repository;
-import ch.fhnw.oop2.tasky.model.Task;
-import ch.fhnw.oop2.tasky.model.TaskData;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class RepositoryTest {
 	

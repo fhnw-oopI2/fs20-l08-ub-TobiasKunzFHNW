@@ -1,6 +1,11 @@
 package ch.fhnw.oop2.tasky.ui.Graphical;
 
+import ch.fhnw.oop2.tasky.model.Repository;
+import ch.fhnw.oop2.tasky.model.Task;
+import ch.fhnw.oop2.tasky.model.impl.SQLite;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
@@ -16,6 +21,7 @@ public class Starter extends Application {
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
+
 
 	@Override
 	public void start(Stage primaryStage) {
