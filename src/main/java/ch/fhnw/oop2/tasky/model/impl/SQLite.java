@@ -11,61 +11,24 @@ import java.util.List;
 import java.util.Optional;
 
 public class SQLite implements Repository {
-	public enum Database {
-		REPOSITORY("jdbc:sqlite:Repository.db"), TEST("jdbc:sqlite:TestRepository.db");
-		String url;
-
-		Database(String url) {
-			this.url = url;
-		}
-
-		public String getUrl() {
-			return url;
-		}
-	}
-
 	private Connection conn;
-	private int currentId;
+	private int nextID;
 
 	public SQLite(Database database) {
 		conn = connect(database);
-		currentId = getID(conn);
+		nextID = getCurrentHighestID(conn) + 1;
 	}
 
-	public void setUp() {
-		deleteTable(conn);
+	/**
+	 * Call me to create a new DB
+	 *
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Connection conn = connect(Database.TEST);
 		createNewDatabase(conn);
 		createNewTable(conn);
 	}
-
-
-	@Override
-	public Task create(TaskData data) {
-		Task newTask = new Task(++currentId, data);
-		insert(conn, newTask);
-		return newTask;
-	}
-
-	@Override
-	public List<Task> read() {
-		return getTasks(conn).orElse(null); //fixme throw error?
-	}
-
-	@Override
-	public Task read(long id) {
-		return getTask(conn, id).orElse(null); //fixme throw error?
-	}
-
-	@Override
-	public void update(Task updated) {
-		update(conn, updated);
-	}
-
-	@Override
-	public void delete(long id) {
-		delete(conn, id);
-	}
-
 
 	/**
 	 * Opens a connection to the DB
@@ -83,19 +46,11 @@ public class SQLite implements Repository {
 		return conn;
 	}
 
-	public void disconnect() {
-		try {
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
+	/**0L
 	 * @param conn
 	 * @return ID of the last element in the table
 	 */
-	private static int getID(Connection conn) {
+	private static int getCurrentHighestID(Connection conn) {
 		String sql = "SELECT MAX(id) FROM Tasks";
 
 		try {
@@ -237,17 +192,6 @@ public class SQLite implements Repository {
 	}
 
 	/**
-	 * Call me to create a new DB
-	 *
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		Connection conn = connect(Database.REPOSITORY);
-		createNewDatabase(conn);
-		createNewTable(conn);
-	}
-
-	/**
 	 * Creates a new Database at the given (= variable url) location
 	 *
 	 * @param conn
@@ -287,14 +231,72 @@ public class SQLite implements Repository {
 		}
 	}
 
+	public void clear() {
+		deleteTable(conn);
+	}
+
+	public void setUp() {
+//		deleteTable(conn);
+		createNewDatabase(conn);
+		createNewTable(conn);
+	}
+
+	@Override
+	public Task create(TaskData data) {
+		Task newTask = new Task(nextID++, data);
+		insert(conn, newTask);
+		return newTask;
+	}
+
+	@Override
+	public List<Task> read() {
+		return getTasks(conn).orElse(null); //fixme throw error?
+	}
+
+	@Override
+	public Task read(long id) {
+		return getTask(conn, id).orElse(null); //fixme throw error?
+	}
+
+	@Override
+	public void update(Task updated) {
+		update(conn, updated);
+	}
+
+	@Override
+	public void delete(long id) {
+		delete(conn, id);
+	}
+
+	public void disconnect() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void deleteTable(Connection conn) {
-		final String sql = "DROP TABLE IF EXISTS Tasks";
+		final String sql = "DELETE FROM Tasks";
 		Statement stmt;
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public enum Database {
+		REPOSITORY("jdbc:sqlite:Repository.db"), TEST("jdbc:sqlite:TestRepository.db");
+		String url;
+
+		Database(String url) {
+			this.url = url;
+		}
+
+		public String getUrl() {
+			return url;
 		}
 	}
 }
