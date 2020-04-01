@@ -67,7 +67,7 @@ public class TaskLane extends VBox {
 	private void styleContainer() {
 		setVgrow(container, Priority.ALWAYS);
 		setMargin(container, new Insets(10));
-		container.setSpacing(20);
+		container.setSpacing(10);
 		container.setPadding(new Insets(10));
 		container.setStyle("-fx-border-color: gray");
 		container.setStyle("-fx-border-style: dashed");

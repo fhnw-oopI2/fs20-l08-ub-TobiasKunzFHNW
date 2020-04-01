@@ -30,9 +30,9 @@ public class ApplicationUI extends GridPane {
 	private static ObservableList<Task> tasks;
 	private static SimpleLongProperty selectedId = new SimpleLongProperty();
 
-	private static final float WIDTH_LANES = 0.6f;
+	private static final int WIDTH_LANES = 60;
 	//private static final float WIDTH_DETAILS = 0.4f;
-	private static final float HEIGHT_FOOTER = 0.1f;
+	private static final int HEIGHT_FOOTER = 10;
 	private static final int NUMBER_OF_LANES = 3;
 
 
@@ -90,20 +90,36 @@ public class ApplicationUI extends GridPane {
 		center.getColumnConstraints().add(new ColumnConstraints(250));
 		center.getRowConstraints().add(new RowConstraints(800));
 */
-		getColumnConstraints().add(new ColumnConstraints(WIDTH_LANES / NUMBER_OF_LANES * Starter.WIDTH));
-		getColumnConstraints().add(new ColumnConstraints(WIDTH_LANES / NUMBER_OF_LANES * Starter.WIDTH));
-		getColumnConstraints().add(new ColumnConstraints(WIDTH_LANES / NUMBER_OF_LANES * Starter.WIDTH));
-		getColumnConstraints().add(new ColumnConstraints((1 - WIDTH_LANES) * Starter.WIDTH));
 
-		getRowConstraints().add(new RowConstraints((1 - HEIGHT_FOOTER) * Starter.HEIGHT));
-		getRowConstraints().add(new RowConstraints(HEIGHT_FOOTER * Starter.HEIGHT));
+		ColumnConstraints column1 = new ColumnConstraints();
+		column1.setPercentWidth(WIDTH_LANES / NUMBER_OF_LANES);
+
+		ColumnConstraints column2 = new ColumnConstraints();
+		column2.setPercentWidth(WIDTH_LANES / NUMBER_OF_LANES);
+
+		ColumnConstraints column3 = new ColumnConstraints();
+		column3.setPercentWidth(WIDTH_LANES / NUMBER_OF_LANES);
+
+		ColumnConstraints column4 = new ColumnConstraints();
+		column4.setPercentWidth((100 - WIDTH_LANES));
+
+		getColumnConstraints().addAll(column1, column2, column3, column4);
+
+
+		/*getRowConstraints().add(new RowConstraints((1 - HEIGHT_FOOTER) * Starter.HEIGHT));
+		getRowConstraints().add(new RowConstraints(HEIGHT_FOOTER * Starter.HEIGHT));*/
+		RowConstraints row1 = new RowConstraints();
+		row1.setPercentHeight(100-HEIGHT_FOOTER);
+		RowConstraints row2 = new RowConstraints();
+		row2.setPercentHeight(HEIGHT_FOOTER);
+		getRowConstraints().addAll(row1, row2);
+
 
 		add(container.get(0), 0, 0);
 		add(container.get(1), 1, 0);
 		add(container.get(2), 2, 0);
 		add(details, 3, 0);
 		add(footer, 0, 1);
-
 
 
 		//center.getChildren().addAll(container);
