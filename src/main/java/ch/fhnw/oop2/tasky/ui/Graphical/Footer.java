@@ -5,6 +5,7 @@ import ch.fhnw.oop2.tasky.model.Task;
 import ch.fhnw.oop2.tasky.model.TaskData;
 import javafx.application.Application;
 import javafx.collections.ListChangeListener;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
@@ -29,7 +30,10 @@ public class Footer extends HBox {
 		getChildren().addAll(buttonNew, buttonRefresh);
 		buttonNew.setFont(Starter.BUTTON_FONT);
 		buttonRefresh.setFont(Starter.BUTTON_FONT);
-		setSpacing(20);
+		buttonNew.setPrefWidth(200);
+		buttonRefresh.setPrefWidth(200);
+		setSpacing(10);
+		setPadding(new Insets(10));
 	}
 
 	private void createNewTask(){

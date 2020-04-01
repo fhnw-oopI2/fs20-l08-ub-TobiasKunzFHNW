@@ -17,19 +17,24 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 
 import java.util.List;
 
-public class ApplicationUI extends BorderPane {
+public class ApplicationUI extends GridPane {
 	private Parent details;
 	private Parent footer;
-	private HBox center;
+	private GridPane center;
 	private List<TaskLane> container;
 	private static Repository repository;
 	private static ObservableList<Task> tasks;
 	private static SimpleLongProperty selectedId = new SimpleLongProperty();
+
+	private static final float WIDTH_LANES = 0.6f;
+	//private static final float WIDTH_DETAILS = 0.4f;
+	private static final float HEIGHT_FOOTER = 0.1f;
+	private static final int NUMBER_OF_LANES = 3;
+
 
 	public static Repository getRepository() {
 		return repository;
@@ -75,8 +80,33 @@ public class ApplicationUI extends BorderPane {
 		container = List.of(new TaskLane(State.TODO),
 				new TaskLane(State.DOING),
 				new TaskLane(State.DONE));
-		center = new HBox();
-		center.getChildren().addAll(container);
+		/*center = new GridPane();
+
+		center.add(container.get(0),0,0);
+		center.add(container.get(1),1,0);
+		center.add(container.get(2),2,0);
+		center.getColumnConstraints().add(new ColumnConstraints(250)); // fixme
+		center.getColumnConstraints().add(new ColumnConstraints(250));
+		center.getColumnConstraints().add(new ColumnConstraints(250));
+		center.getRowConstraints().add(new RowConstraints(800));
+*/
+		getColumnConstraints().add(new ColumnConstraints(WIDTH_LANES / NUMBER_OF_LANES * Starter.WIDTH));
+		getColumnConstraints().add(new ColumnConstraints(WIDTH_LANES / NUMBER_OF_LANES * Starter.WIDTH));
+		getColumnConstraints().add(new ColumnConstraints(WIDTH_LANES / NUMBER_OF_LANES * Starter.WIDTH));
+		getColumnConstraints().add(new ColumnConstraints((1 - WIDTH_LANES) * Starter.WIDTH));
+
+		getRowConstraints().add(new RowConstraints((1 - HEIGHT_FOOTER) * Starter.HEIGHT));
+		getRowConstraints().add(new RowConstraints(HEIGHT_FOOTER * Starter.HEIGHT));
+
+		add(container.get(0), 0, 0);
+		add(container.get(1), 1, 0);
+		add(container.get(2), 2, 0);
+		add(details, 3, 0);
+		add(footer, 0, 1);
+
+
+
+		//center.getChildren().addAll(container);
 	}
 
 	private void initializeListener() {
@@ -97,12 +127,12 @@ public class ApplicationUI extends BorderPane {
 	}
 
 	private void layoutControls() {
-		setMargin(details, new Insets(20));
+		/*setMargin(details, new Insets(20));
 		setMargin(footer, new Insets(20));
-		setMargin(center, new Insets(20));
-		setCenter(center);
+		setMargin(center, new Insets(20));*/
+	/*	setCenter(center);
 		setRight(details);
-		setBottom(footer);
+		setBottom(footer);*/
 	}
 
 }

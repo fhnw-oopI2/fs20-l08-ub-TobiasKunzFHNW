@@ -81,6 +81,8 @@ public class TaskDetails extends VBox {
 		datePickerDue.setValue(LocalDate.now());
 		getChildren().add(wrapButtons(buttonSave, buttonDelete));
 		setSpacing(10);
+		setPadding(new Insets(10));
+
 	}
 
 	private HBox wrapInHbox(Label label, Control element) {
