@@ -16,6 +16,8 @@ public class SQLite implements Repository {
 
 	public SQLite(Database database) {
 		conn = connect(database);
+		createNewDatabase(conn);
+		createNewTable(conn);
 		nextID = getCurrentHighestID(conn) + 1;
 	}
 
@@ -200,7 +202,7 @@ public class SQLite implements Repository {
 		DatabaseMetaData meta = null;
 		try {
 			meta = conn.getMetaData();
-			System.out.println("The driver name is " + meta.getDriverName());
+			//System.out.println("The driver name is " + meta.getDriverName());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

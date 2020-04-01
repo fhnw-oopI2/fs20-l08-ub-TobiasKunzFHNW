@@ -15,6 +15,7 @@ public class TaskUi extends GridPane {
 	private static final int PADDING = 20;
 	private Task task;
 
+/*
 	private static final String STYLE_NORMAL = "-fx-background-color: \n" +
 			"       -fx-shadow-highlight-color, \n" +
 			"       -fx-outer-border, \n" +
@@ -25,7 +26,9 @@ public class TaskUi extends GridPane {
 			"       -fx-shadow-highlight-color, \n" +
 			"       -fx-outer-border, \n" +
 			"       -fx-inner-border, \n" +
-			"       -fx-accent;";
+			"       -fx-accent;" +
+			":hover -fx-background-color:#dae7f3";
+*/
 
 	public Task getTask() {
 		return task;
@@ -55,21 +58,23 @@ public class TaskUi extends GridPane {
 		add(labelTitle,0,0);
 		add(labelDue,3,1);
 
-		setStyle(STYLE_NORMAL);
+		//setStyle(STYLE_NORMAL);
+
 
 		//	setPrefWidth(Integer.MAX_VALUE);
 		setHgap(5);
 		setVgap(5);
-
+		getStylesheets().add("CSS/TaskUI.css");
+		getStyleClass().add("TaskUI");
 		setPrefHeight(80);
 		//setPadding(new Insets(PADDING));
 	}
 
 	public void select() {
-		setStyle(STYLE_SELECTED);
+		getStyleClass().add("selected");
 	}
 
 	public void deselect() {
-		setStyle(STYLE_NORMAL);
+		getStyleClass().remove("selected");
 	}
 }

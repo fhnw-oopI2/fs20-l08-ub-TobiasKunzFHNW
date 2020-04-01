@@ -1,0 +1,17 @@
+* {
+    -TaskUI-background: rgb(120, 200, 165);
+    -TaskUI-selected: rgb(83, 164, 200)
+}
+
+.TaskUI {
+    -fx-background-color: -TaskUI-background;
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+.TaskUI.selected {
+    -fx-background-color:  -TaskUI-selected;
+}
+
+.TaskUI:hover {
+    -fx-background-color: linear-gradient(-TaskUI-background, -TaskUI-selected);
+}
