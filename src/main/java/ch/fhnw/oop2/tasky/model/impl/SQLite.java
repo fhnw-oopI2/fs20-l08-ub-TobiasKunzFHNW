@@ -25,7 +25,7 @@ public class SQLite implements Repository {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Connection conn = connect(Database.TEST);
+		Connection conn = connect(Database.REPOSITORY);
 		createNewDatabase(conn);
 		createNewTable(conn);
 	}

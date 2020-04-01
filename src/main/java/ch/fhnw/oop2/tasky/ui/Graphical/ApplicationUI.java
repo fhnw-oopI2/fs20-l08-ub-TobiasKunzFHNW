@@ -6,6 +6,7 @@ import ch.fhnw.oop2.tasky.model.Task;
 import ch.fhnw.oop2.tasky.model.impl.SQLite;
 import ch.fhnw.oop2.tasky.ui.Graphical.Task.TaskDetails;
 import ch.fhnw.oop2.tasky.ui.Graphical.Task.TaskLane;
+import ch.fhnw.oop2.tasky.ui.Graphical.Task.TaskUi;
 import javafx.application.Application;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.value.ObservableListValue;
@@ -79,11 +80,21 @@ public class ApplicationUI extends BorderPane {
 	}
 
 	private void initializeListener() {
-		ListChangeListener<Task> listener = change -> container.forEach(container -> container.setTasks(ApplicationUI.getTasks()));
-
-		ApplicationUI.tasks.addListener(listener);
+		selectedId.addListener((event, oldId, newId) -> highlightSelectedTask(oldId.longValue(), newId.longValue()));
 	}
 
+	private void highlightSelectedTask(long oldId, long newId) {
+		container.stream()
+				.flatMap(taskLane -> taskLane.getTaskUis().stream())
+				.filter(taskUi -> taskUi.getTask().id == oldId || taskUi.getTask().id == newId)
+				.forEach(taskUi -> {
+					if (taskUi.getTask().id == oldId) {
+						taskUi.deselect();
+					} else {
+						taskUi.select();
+					}
+				});
+	}
 
 	private void layoutControls() {
 		setMargin(details, new Insets(20));

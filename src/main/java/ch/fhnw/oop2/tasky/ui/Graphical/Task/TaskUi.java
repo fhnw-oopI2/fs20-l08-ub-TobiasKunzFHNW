@@ -3,15 +3,33 @@ package ch.fhnw.oop2.tasky.ui.Graphical.Task;
 import ch.fhnw.oop2.tasky.model.Task;
 import ch.fhnw.oop2.tasky.ui.Graphical.ApplicationUI;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-public class TaskUi extends VBox {
+public class TaskUi extends GridPane {
 	//private Task task; todo
 	private Label labelTitle;
-	private Label labelDescription;
+	private Label labelDue;
 	private static final int PADDING = 20;
 	private Task task;
+
+	private static final String STYLE_NORMAL = "-fx-background-color: \n" +
+			"       -fx-shadow-highlight-color, \n" +
+			"       -fx-outer-border, \n" +
+			"       -fx-inner-border, \n" +
+			"       -fx-body-color;";
+
+	private static final String STYLE_SELECTED = "-fx-background-color: \n" +
+			"       -fx-shadow-highlight-color, \n" +
+			"       -fx-outer-border, \n" +
+			"       -fx-inner-border, \n" +
+			"       -fx-accent;";
+
+	public Task getTask() {
+		return task;
+	}
 
 	public TaskUi(Task task) {
 		this.task = task;
@@ -25,19 +43,33 @@ public class TaskUi extends VBox {
 	}
 
 	private void initializeControls() {
-		labelTitle = new Label();
+		labelTitle = new Label(task.data.title);
+		labelDue = new Label(task.data.dueDate.toString());
 	}
 
 	private void layoutControls() {
-		labelTitle.setText(task.data.title);
-		getChildren().addAll(labelTitle);
-		setStyle("-fx-background-color: \n" +
-				"       -fx-shadow-highlight-color, \n" +
-				"       -fx-outer-border, \n" +
-				"       -fx-inner-border, \n" +
-				"       -fx-body-color;");
+		labelTitle.setPadding(new Insets(10));
+		labelTitle.setAlignment(Pos.TOP_CENTER);
+		labelDue.setAlignment(Pos.BOTTOM_RIGHT);
+
+		add(labelTitle,0,0);
+		add(labelDue,3,1);
+
+		setStyle(STYLE_NORMAL);
+
 		//	setPrefWidth(Integer.MAX_VALUE);
-		setPrefHeight(100);
+		setHgap(5);
+		setVgap(5);
+
+		setPrefHeight(80);
 		//setPadding(new Insets(PADDING));
+	}
+
+	public void select() {
+		setStyle(STYLE_SELECTED);
+	}
+
+	public void deselect() {
+		setStyle(STYLE_NORMAL);
 	}
 }
