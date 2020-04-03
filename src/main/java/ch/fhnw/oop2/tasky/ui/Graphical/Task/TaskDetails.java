@@ -5,17 +5,12 @@ import ch.fhnw.oop2.tasky.model.Task;
 import ch.fhnw.oop2.tasky.model.TaskData;
 import ch.fhnw.oop2.tasky.ui.Graphical.ApplicationUI;
 import ch.fhnw.oop2.tasky.ui.Graphical.Starter;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableLongValue;
-import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-import javax.swing.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;

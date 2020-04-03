@@ -206,7 +206,7 @@ public class SQLite implements Repository {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("A new database has been created.");
+		//System.out.println("A new database has been created.");
 	}
 
 	/**
@@ -238,7 +238,6 @@ public class SQLite implements Repository {
 	}
 
 	public void setUp() {
-//		deleteTable(conn);
 		createNewDatabase(conn);
 		createNewTable(conn);
 	}
