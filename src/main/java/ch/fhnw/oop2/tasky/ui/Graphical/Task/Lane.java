@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
@@ -20,6 +21,8 @@ public class Lane extends VBox {
 	private Label labelTitle;
 	private VBox container;
 	private List<TaskUi> taskUis;
+	private static int MIN_WIDTH = 200;
+	private static int MIN_HEIGHT = 500;
 
 	public List<TaskUi> getTaskUis() {
 		return taskUis;
@@ -48,10 +51,13 @@ public class Lane extends VBox {
 	private void initializeControls() {
 		labelTitle = new Label(state.name());
 		container = new VBox();
+		getStylesheets().add("CSS/Lane.css");
 	}
 
 	private void layoutControls() {
 		HBox.setHgrow(this, Priority.ALWAYS);
+		setMinWidth(MIN_WIDTH);
+		setMinHeight(MIN_HEIGHT);
 		styleTitle();
 		styleContainer();
 		getChildren().addAll(labelTitle, container);
@@ -69,10 +75,8 @@ public class Lane extends VBox {
 		setMargin(container, new Insets(10));
 		container.setSpacing(10);
 		container.setPadding(new Insets(10));
-		container.setStyle("-fx-border-color: gray");
-		container.setStyle("-fx-border-style: dashed");
+		container.getStyleClass().add("LaneContainer");
 
-		//container.setAlignment(Pos.TOP_CENTER);
 	}
 
 	private void drawTasks() {

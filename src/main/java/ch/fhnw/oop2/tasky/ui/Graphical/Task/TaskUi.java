@@ -39,25 +39,16 @@ public class TaskUi extends GridPane {
 	private void initializeControls() {
 		labelTitle = new Label(task.data.title);
 		labelDue = new Label(task.data.dueDate.toString());
+		getStylesheets().add("CSS/TaskUI.css");
 	}
 
 	private void layoutControls() {
-		//labelDue.setAlignment(Pos.CENTER_RIGHT);
-		//labelDue.setMaxWidth(Double.MAX_VALUE);
-		//labelDue.setAlignment(Pos.BOTTOM_RIGHT);
-
 		getRowConstraints().add(new RowConstraints((HEIGHT_TITLE) * TASK_HEIGHT));
 		getRowConstraints().add(new RowConstraints((1 - HEIGHT_TITLE) * TASK_HEIGHT));
-		//	getColumnConstraints().add(new ColumnConstraints(10));
-
-
 		add(labelTitle, 0, 0);
 		add(labelDue, 0, 1);
-		getStylesheets().add("CSS/TaskUI.css");
 		getStyleClass().add("TaskUI");
-
 		setPrefHeight(TASK_HEIGHT);
-
 	}
 
 	public void select() {
