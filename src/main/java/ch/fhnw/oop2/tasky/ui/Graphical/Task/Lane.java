@@ -15,7 +15,7 @@ import javafx.scene.text.Font;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TaskLane extends VBox {
+public class Lane extends VBox {
 	private State state;
 	private Label labelTitle;
 	private VBox container;
@@ -25,7 +25,7 @@ public class TaskLane extends VBox {
 		return taskUis;
 	}
 
-	public TaskLane(State state) {
+	public Lane(State state) {
 		this.state = state;
 		initializeControls();
 		layoutControls();
