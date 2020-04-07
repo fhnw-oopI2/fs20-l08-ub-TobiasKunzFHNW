@@ -17,54 +17,29 @@ public class ApplicationUI extends GridPane {
 	private Parent taskDetail;
 	private Parent footer;
 	private Parent laneGroup;
-	private static Repository repository;
+	private TaskyPM pm;
 	private static ObservableList<Task> tasks;
 	private static SimpleLongProperty selectedId = new SimpleLongProperty();
 
 	private static final int WIDTH_LANES = 60;
 	private static final int HEIGHT_FOOTER = 10;
 
-	public static Repository getRepository() {
-		return repository;
-	}
-
-	public static ObservableList<Task> getTasks() {
-		return tasks;
-	}
-
-	public static void setSelectedId(Long value) {
-		selectedId.set(value);
-	}
-
-	public static SimpleLongProperty getSelectedId() {
-		return selectedId;
-	}
-
-	public static void refreshTasks() {
-		tasks.setAll(repository.read());
-	}
-
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
 
-	private void initConfigs() {
-		repository = new SQLite(SQLite.Database.REPOSITORY);
-		tasks = FXCollections.observableArrayList();
-		selectedId.set(-1);
-		refreshTasks();
-	}
-
-	public ApplicationUI() {
-		initConfigs();
+	public ApplicationUI(TaskyPM pm) {
+		this.pm = pm;
 		initializeControls();
 		layoutControls();
+		pm.refreshTasks();
+		pm.selectTask(-1);
 	}
 
 	private void initializeControls() {
-		taskDetail = new TaskDetails();
-		footer = new Footer();
-		laneGroup = new LaneGroup(State.TODO, State.DOING, State.DONE);
+		taskDetail = new TaskDetails(pm);
+		footer = new Footer(pm);
+		laneGroup = new LaneGroup(pm,State.TODO, State.DOING, State.DONE);
 
 		ColumnConstraints columnLanes = new ColumnConstraints();
 		columnLanes.setPercentWidth((WIDTH_LANES));
@@ -77,14 +52,11 @@ public class ApplicationUI extends GridPane {
 		RowConstraints row2 = new RowConstraints();
 		row2.setPercentHeight(HEIGHT_FOOTER);
 		getRowConstraints().addAll(row1, row2);
+}
 
+	private void layoutControls() {
 		add(laneGroup, 0, 0);
 		add(taskDetail, 1, 0);
 		add(footer, 0, 1);
 	}
-
-
-	private void layoutControls() {
-	}
-
 }

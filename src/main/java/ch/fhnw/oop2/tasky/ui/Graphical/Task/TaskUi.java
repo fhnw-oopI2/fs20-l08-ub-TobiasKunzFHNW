@@ -3,6 +3,7 @@ package ch.fhnw.oop2.tasky.ui.Graphical.Task;
 import ch.fhnw.oop2.tasky.model.Task;
 import ch.fhnw.oop2.tasky.ui.Graphical.ApplicationUI;
 import ch.fhnw.oop2.tasky.ui.Graphical.Starter;
+import ch.fhnw.oop2.tasky.ui.Graphical.TaskyPM;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -12,20 +13,20 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 
 public class TaskUi extends GridPane {
-	//private Task task; todo
 	private Label labelTitle;
 	private Label labelDue;
 	private Task task;
 	private static final int TASK_HEIGHT = 80;
 	private static final float HEIGHT_TITLE = 0.8f;
-	//private static final float WIDTH = 0.8f;
+	private TaskyPM pm;
 
 
 	public Task getTask() {
 		return task;
 	}
 
-	public TaskUi(Task task) {
+	public TaskUi(TaskyPM pm, Task task) {
+		this.pm = pm;
 		this.task = task;
 		initializeControls();
 		layoutControls();
@@ -33,7 +34,14 @@ public class TaskUi extends GridPane {
 	}
 
 	private void initializeListeners() {
-		setOnMouseClicked(event -> ApplicationUI.setSelectedId(task.id));
+		setOnMouseClicked(event -> pm.selectTask(task.id));
+		pm.selectedTaskIdProperty().addListener((event, oldValue, newValue) -> {
+			if (task.id == newValue.longValue()) {
+				select();
+			} else {
+				deselect();
+			}
+		});
 	}
 
 	private void initializeControls() {
@@ -48,6 +56,9 @@ public class TaskUi extends GridPane {
 		add(labelTitle, 0, 0);
 		add(labelDue, 0, 1);
 		getStyleClass().add("TaskUI");
+		if (pm.getSelectedTaskId() == task.id){
+			select();
+		}
 		setPrefHeight(TASK_HEIGHT);
 	}
 

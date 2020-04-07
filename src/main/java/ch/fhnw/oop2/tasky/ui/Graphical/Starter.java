@@ -25,10 +25,11 @@ public class Starter extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		Parent rootPane = new ApplicationUI();
+		TaskyPM pm = new TaskyPM();
+		Parent rootPane = new ApplicationUI(pm);
 		Scene myScene = new Scene(rootPane);
 
-		primaryStage.setTitle("Tasky!");
+		primaryStage.setTitle(pm.getTitle());
 		primaryStage.setScene(myScene);
 		primaryStage.setWidth(WIDTH);
 		primaryStage.setHeight(HEIGHT);

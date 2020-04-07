@@ -2,16 +2,14 @@ package ch.fhnw.oop2.tasky.ui.Graphical.Task;
 
 import ch.fhnw.oop2.tasky.model.State;
 import ch.fhnw.oop2.tasky.model.Task;
-import ch.fhnw.oop2.tasky.model.TaskData;
-import ch.fhnw.oop2.tasky.ui.Graphical.ApplicationUI;
 import ch.fhnw.oop2.tasky.ui.Graphical.Starter;
+import ch.fhnw.oop2.tasky.ui.Graphical.TaskyPM;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -28,34 +26,57 @@ public class TaskDetails extends VBox {
 	private Button buttonSave, buttonDelete;
 
 	private Task currentTask;
+	private TaskyPM pm;
 
-	public TaskDetails() {
+	public TaskDetails(TaskyPM pm) {
+		this.pm = pm;
 		initializeControls();
 		layoutControls();
 		initializeListeners();
 	}
 
 	private void initializeListeners() {
-		ApplicationUI.getSelectedId().addListener((event, oldId, newId) -> updateSelectedTask(newId.longValue()));
-		buttonSave.setOnMouseClicked(event -> saveTask());
-		buttonDelete.setOnMouseClicked(event -> deleteTask());
+		buttonSave.setOnMouseClicked(event -> pm.saveTask());
+		buttonDelete.setOnMouseClicked(event -> pm.deleteTask());
+		pm.selectedTaskIdProperty().addListener((event, oldValue, newValue) -> setAllDisabled(newValue.longValue() != -1));
+	}
+
+	private void setAllDisabled(boolean b) {
+		textFieldID.setDisable(!b);
+		textAreaDesc.setDisable(!b);
+		textFieldTitle.setDisable(!b);
+		datePickerDue.setDisable(!b);
+		comboBoxState.setDisable(!b);
+	}
+
+	private void setTextFieldID(long id) {
+		if (id == -1) {
+			textFieldID.setText("");
+		} else {
+			textFieldID.setText(String.valueOf(id));
+		}
 	}
 
 	private void initializeControls() {
 		labelID = new Label("ID: ");
 		textFieldID = new TextField();
+		pm.selectedTaskIdProperty().addListener((event, oldV,newV)-> setTextFieldID(newV.longValue()));
 
 		labelTitle = new Label("Title: ");
 		textFieldTitle = new TextField();
+		textFieldTitle.textProperty().bindBidirectional(pm.selectedTaskTitleProperty());
 
 		labelDesc = new Label("Description: ");
 		textAreaDesc = new TextArea();
+		textAreaDesc.textProperty().bindBidirectional(pm.selectedTaskDescProperty());
 
 		labelDue = new Label("Date: ");
 		datePickerDue = new DatePicker();
+		datePickerDue.valueProperty().bindBidirectional(pm.selectedTaskDateProperty());
 
 		labelState = new Label("State: ");
 		comboBoxState = new ComboBox<>();
+		comboBoxState.valueProperty().bindBidirectional(pm.selectedTaskStateProperty());
 
 		buttonSave = new Button("Save");
 		buttonDelete = new Button("Delete");
@@ -71,13 +92,12 @@ public class TaskDetails extends VBox {
 		});
 
 		textFieldID.setEditable(false);
+		comboBoxState.setEditable(false);
 		comboBoxState.getItems().setAll(State.values());
 		comboBoxState.getSelectionModel().select(0);
-		datePickerDue.setValue(LocalDate.now());
 		getChildren().add(wrapButtons(buttonSave, buttonDelete));
 		setSpacing(10);
 		setPadding(new Insets(10));
-
 	}
 
 	private HBox wrapInHbox(Label label, Control element) {
@@ -98,52 +118,5 @@ public class TaskDetails extends VBox {
 		hBox.setSpacing(10);
 		hBox.getChildren().addAll(b1, b2);
 		return hBox;
-	}
-
-	private void updateSelectedTask(long id) {
-		currentTask = ApplicationUI.getRepository().read(id);
-
-		if (currentTask != null) {
-			fillFields();
-		} else {
-			emptyFields();
-		}
-
-	}
-
-	private void fillFields() {
-
-		textFieldID.setText(String.valueOf(currentTask.id));
-		textFieldTitle.setText(currentTask.data.title);
-		textAreaDesc.setText(currentTask.data.desc);
-		datePickerDue.setValue(currentTask.data.dueDate);
-		comboBoxState.setValue(currentTask.data.state);
-		textFieldTitle.requestFocus();
-	}
-
-	private void emptyFields() {
-		textFieldID.clear();
-		textFieldTitle.clear();
-		textAreaDesc.clear();
-		datePickerDue.setValue(LocalDate.now());
-		comboBoxState.setValue(null);
-	}
-
-	private void saveTask() {
-		TaskData newData = new TaskData(textFieldTitle.getText(), textAreaDesc.getText(), datePickerDue.getValue(), comboBoxState.getValue());
-
-		ApplicationUI.getRepository().update(new Task(currentTask.id, newData));
-		ApplicationUI.refreshTasks();
-	}
-
-	private void deleteTask() {
-		ApplicationUI.getRepository().delete(currentTask.id);
-		ApplicationUI.refreshTasks();
-		emptyFields();
-	}
-
-	public void createNewTask(){
-		emptyFields();
-
 	}
 }

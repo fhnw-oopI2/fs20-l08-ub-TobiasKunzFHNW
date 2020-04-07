@@ -2,50 +2,36 @@ package ch.fhnw.oop2.tasky.ui.Graphical.Task;
 
 import ch.fhnw.oop2.tasky.model.State;
 import ch.fhnw.oop2.tasky.model.Task;
-import ch.fhnw.oop2.tasky.ui.Graphical.ApplicationUI;
+import ch.fhnw.oop2.tasky.ui.Graphical.TaskyPM;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Lane extends VBox {
 	private State state;
 	private Label labelTitle;
 	private VBox container;
-	private List<TaskUi> taskUis;
 	private static int MIN_WIDTH = 200;
 	private static int MIN_HEIGHT = 500;
+	private TaskyPM pm;
 
-	public List<TaskUi> getTaskUis() {
-		return taskUis;
-	}
-
-	public Lane(State state) {
+	public Lane(TaskyPM pm, State state) {
+		this.pm = pm;
 		this.state = state;
 		initializeControls();
 		layoutControls();
 		initializeListeners();
-		updateTaskUIs();
+		drawTasks();
 	}
 
 	private void initializeListeners() {
-		ListChangeListener<Task> listener = change -> updateTaskUIs();
-		ApplicationUI.getTasks().addListener(listener);
-	}
-
-	private void updateTaskUIs() {
-		taskUis = ApplicationUI.getTasks().stream().filter(task -> task.data.state == state)
-				.map(TaskUi::new).collect(Collectors.toList());
-
-		drawTasks();
+		ListChangeListener<Task> listener = change -> drawTasks();
+		pm.getTasks().addListener(listener);
 	}
 
 	private void initializeControls() {
@@ -81,6 +67,6 @@ public class Lane extends VBox {
 
 	private void drawTasks() {
 		container.getChildren().clear();
-		container.getChildren().addAll(taskUis);
+		container.getChildren().addAll(pm.getTasksByState(state));
 	}
 }
