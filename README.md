@@ -1,24 +1,15 @@
-# Übung 7 – Tasky Part 5
+# Übung 8 – Tasky Part 6
+In der Übung 7 (Tasky Part 5) haben wir die Anwendung mit der nötigen Funktionalität ergänzt. Tasky funktioniert zwar, weist aber relativ viele Abhängigkeiten unter den Klassen auf und ist so unnötig komplex.
 
-In der Übung 6 (Tasky Part 4) haben wir das GUI mit allen erforderlichen Controls erstellt (siehe nachfolgender Screenshot. In dieser Übung werden wir die Controls mit den Klassen verbinden, welche die tatsächliche Funktionalität implementieren (z.B. Repository).
+Nehmen Sie als Ausgangspunkt Ihre Lösung von Tasky 5 (UB7), oder die Musterlösung von UB7.
 
+**Aufgabe**
+1.	Wir wollen Tasky einem Refactoring unterziehen. Dazu brauchen wir das **Architekturmuster Presentation Model**. Ziel ist es das Tasky das Presentation Model implementiert und somit einfacher und testbarer wird.
+2.	Schreiben Sie eine JUnit Testklasse, welche das Presentation Model testet.
 
-Noch eine Bemerkung zur Funktion des "New" Buttons. Wenn der New-Button gedrückt wird, erscheint in der ersten Lane (hier Todo) zuoberst eine neue Task. Zugleich wird auf dem Detail-Bildschirm die neue ID eingesetzt. Alle anderen Controls sind leer. Jetzt können die Daten der neuen Task erfasst werden. Mit "Save" werden die Daten gespeichert und der Titel in den neuen Task angezeigt.
-
-![Tasky Mockup](./images/ub6-ui.png)
-
-## Tipps:
-
-1. Schreiben Sie eine Klasse, **TaskyLabel** welche von Label abgeleitet ist. Diese Klasse implementiert ein Tasky Label und enthält die ID einer Task.
-
-2. Überlegen Sie sich welche GUI Teile müssen mit einander synchronisiert werden müssen. Diese könnten mit Properties abgeglichen werden.
-
-3.	Überlegen Sie sich welches Attribut als Property in Frage kommen könnte. Im Idealfall genügt ein Attribut! Müssen die Properties uni- oder bidirektional verbunden werden?
-
-4.	Installieren Sie einen Click-Handler in der Klasse **TaskyLabel**. Dieser Handler setzt auf dem Property der Klasse MainScreen die ID dieser Task.
-
-5.	Versuchen Sie so wenig wie möglich zu synchronisieren. Die Lanes/LaneGroup können z.B. nach jedem Update (Speichern, Löschen) neu gezeichnet werden.
-
-Sie **können** (Sie müssen nicht!) sich für die Implementierung am folgenden Klassendiagramm orientieren. Es gibt viele Lösungen für die Umsetzung von Tasky. Diese Skizze ist eine mögliche Lösung.
-
-![Tasky Mockup](./images/ub7-uml.png)
+**Tipps**
+* Schreiben Sie eine Klasse `TaskyPM`. Diese Klasse ist das Presentation Model.
+* Stellen Sie sicher, dass es keine Abhängigkeiten von `TaskyPM` zu den View-Klassen gibt.
+* Die Controls binden sich an das Presentation Model und dessen Properties.
+* Event Handler rufen Methoden auf dem Presentation Model auf. Diese verändern wenn nötig den Zustand der eigenen Properties. Durch die Bindings werden diese Änderungen wieder an die View propagiert.
+* Auch Zustände, wie Button-Enabled, Button-Disabled können im Presentation Model abgebildet werden.
