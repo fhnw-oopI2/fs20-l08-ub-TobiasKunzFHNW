@@ -37,15 +37,17 @@ public class TaskDetails extends VBox {
 	private void initializeListeners() {
 		buttonSave.setOnMouseClicked(event -> pm.saveTask());
 		buttonDelete.setOnMouseClicked(event -> pm.deleteTask());
-		pm.selectedTaskIdProperty().addListener((event, oldValue, newValue) -> setAllDisabled(newValue.longValue() != -1));
+		pm.selectedTaskIdProperty().addListener((event, oldValue, newValue) -> setAllDisabled(newValue.longValue() == -1));
 	}
 
 	private void setAllDisabled(boolean b) {
-		textFieldID.setDisable(!b);
-		textAreaDesc.setDisable(!b);
-		textFieldTitle.setDisable(!b);
-		datePickerDue.setDisable(!b);
-		comboBoxState.setDisable(!b);
+		textFieldID.setDisable(b);
+		textAreaDesc.setDisable(b);
+		textFieldTitle.setDisable(b);
+		datePickerDue.setDisable(b);
+		comboBoxState.setDisable(b);
+		buttonDelete.setDisable(b);
+		buttonSave.setDisable(b);
 	}
 
 	private void setTextFieldID(long id) {
@@ -95,8 +97,11 @@ public class TaskDetails extends VBox {
 		comboBoxState.getItems().setAll(State.values());
 		comboBoxState.getSelectionModel().select(0);
 		getChildren().add(wrapButtons(buttonSave, buttonDelete));
+
 		setSpacing(10);
 		setPadding(new Insets(10));
+
+		setAllDisabled(true);
 	}
 
 	private HBox wrapInHbox(Label label, Control element) {
