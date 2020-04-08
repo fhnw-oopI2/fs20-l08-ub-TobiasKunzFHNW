@@ -1,31 +1,36 @@
-package ch.fhnw.oop2.tasky.ui.Graphical;
+package ch.fhnw.oop2.tasky.model;
 
-import ch.fhnw.oop2.tasky.model.Repository;
-import ch.fhnw.oop2.tasky.model.State;
-import ch.fhnw.oop2.tasky.model.Task;
-import ch.fhnw.oop2.tasky.model.TaskData;
 import ch.fhnw.oop2.tasky.model.impl.SQLite;
 import ch.fhnw.oop2.tasky.ui.Graphical.Task.TaskUi;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TaskyPM {
+	//Repo
 	private static Repository repository = new SQLite(SQLite.Database.REPOSITORY);
+	//General
 	private StringProperty title = new SimpleStringProperty();
+	//Buttons
 	private StringProperty buttonNew = new SimpleStringProperty("New Task");
 	private StringProperty buttonRefresh = new SimpleStringProperty("Refresh");
+	//Task
 	private LongProperty selectedTaskId = new SimpleLongProperty();
 	private StringProperty selectedTaskTitle = new SimpleStringProperty();
 	private StringProperty selectedTaskDesc = new SimpleStringProperty();
 	private ObjectProperty<LocalDate> selectedTaskDate = new SimpleObjectProperty<>();
 	private ObjectProperty<State> selectedTaskState = new SimpleObjectProperty<>();
+	//Observable
 	private ObservableList<Task> tasks = FXCollections.observableArrayList();
+
+	public TaskyPM() {
+		refreshTasks();
+		selectTask(-1);
+	}
 
 	public String getTitle() {
 		return title.get();
@@ -39,24 +44,12 @@ public class TaskyPM {
 		return selectedTaskId;
 	}
 
-	public String getSelectedTaskTitle() {
-		return selectedTaskTitle.get();
-	}
-
 	public StringProperty selectedTaskTitleProperty() {
 		return selectedTaskTitle;
 	}
 
-	public String getSelectedTaskDesc() {
-		return selectedTaskDesc.get();
-	}
-
 	public StringProperty selectedTaskDescProperty() {
 		return selectedTaskDesc;
-	}
-
-	public LocalDate getSelectedTaskDate() {
-		return selectedTaskDate.get();
 	}
 
 	public ObjectProperty<LocalDate> selectedTaskDateProperty() {
@@ -71,24 +64,12 @@ public class TaskyPM {
 		return selectedTaskState;
 	}
 
-	public StringProperty titleProperty() {
-		return title;
-	}
-
 	public ObservableList<Task> getTasks() {
 		return tasks;
 	}
 
-	public String getButtonNew() {
-		return buttonNew.get();
-	}
-
 	public StringProperty buttonNewProperty() {
 		return buttonNew;
-	}
-
-	public String getButtonRefresh() {
-		return buttonRefresh.get();
 	}
 
 	public StringProperty buttonRefreshProperty() {
@@ -101,21 +82,25 @@ public class TaskyPM {
 		selectTask(newTask.id);
 	}
 
-	public void selectTask(long id){
-		Task task = repository.read(id);
-		if (task != null) {
-			selectedTaskId.set(task.id);
-			selectedTaskTitle.set(task.data.title);
-			selectedTaskDesc.set(task.data.desc);
-			selectedTaskDate.set(task.data.dueDate);
-			selectedTaskState.set(task.data.state);
-		} else {
-			selectedTaskId.set(-1);
-			selectedTaskTitle.set(null);
-			selectedTaskDesc.set(null);
-			selectedTaskDate.set(LocalDate.now());
-			selectedTaskState.set(State.TODO);
-		}
+	public void selectTask(long id) {
+		Optional<Task> optionalTask = repository.read(id);
+		optionalTask.ifPresentOrElse(this::selectTask,this::cleanSelection);
+	}
+
+	private void selectTask(Task task){
+		selectedTaskId.set(task.id);
+		selectedTaskTitle.set(task.data.title);
+		selectedTaskDesc.set(task.data.desc);
+		selectedTaskDate.set(task.data.dueDate);
+		selectedTaskState.set(task.data.state);
+	}
+
+	private void cleanSelection(){
+		selectedTaskId.set(-1);
+		selectedTaskTitle.set(null);
+		selectedTaskDesc.set(null);
+		selectedTaskDate.set(LocalDate.now());
+		selectedTaskState.set(State.TODO);
 	}
 
 	public void refreshTasks() {
@@ -124,7 +109,7 @@ public class TaskyPM {
 
 	public List<TaskUi> getTasksByState(State state) {
 		return tasks.stream().filter(task -> task.data.state == state)
-				.map(t -> new TaskUi(this,t)).collect(Collectors.toList());
+				.map(t -> new TaskUi(this, t)).collect(Collectors.toList());
 	}
 
 	public void saveTask() {
@@ -133,7 +118,7 @@ public class TaskyPM {
 		refreshTasks();
 	}
 
-	public void deleteTask(){
+	public void deleteTask() {
 		repository.delete(selectedTaskId.get());
 		refreshTasks();
 		selectTask(-1);

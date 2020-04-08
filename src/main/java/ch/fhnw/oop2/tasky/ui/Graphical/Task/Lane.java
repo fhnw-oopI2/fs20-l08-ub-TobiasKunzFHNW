@@ -2,7 +2,7 @@ package ch.fhnw.oop2.tasky.ui.Graphical.Task;
 
 import ch.fhnw.oop2.tasky.model.State;
 import ch.fhnw.oop2.tasky.model.Task;
-import ch.fhnw.oop2.tasky.ui.Graphical.TaskyPM;
+import ch.fhnw.oop2.tasky.model.TaskyPM;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

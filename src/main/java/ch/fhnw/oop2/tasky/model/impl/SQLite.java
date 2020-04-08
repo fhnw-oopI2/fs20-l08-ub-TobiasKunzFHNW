@@ -255,8 +255,8 @@ public class SQLite implements Repository {
 	}
 
 	@Override
-	public Task read(long id) {
-		return getTask(conn, id).orElse(null); //fixme throw error?
+	public Optional<Task> read(long id) {
+		return getTask(conn, id);
 	}
 
 	@Override

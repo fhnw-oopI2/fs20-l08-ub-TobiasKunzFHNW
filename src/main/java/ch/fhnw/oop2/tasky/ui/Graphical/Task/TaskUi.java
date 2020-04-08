@@ -1,16 +1,10 @@
 package ch.fhnw.oop2.tasky.ui.Graphical.Task;
 
 import ch.fhnw.oop2.tasky.model.Task;
-import ch.fhnw.oop2.tasky.ui.Graphical.ApplicationUI;
-import ch.fhnw.oop2.tasky.ui.Graphical.Starter;
-import ch.fhnw.oop2.tasky.ui.Graphical.TaskyPM;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import ch.fhnw.oop2.tasky.model.TaskyPM;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
 
 public class TaskUi extends GridPane {
 	private Label labelTitle;
@@ -19,7 +13,6 @@ public class TaskUi extends GridPane {
 	private static final int TASK_HEIGHT = 80;
 	private static final float HEIGHT_TITLE = 0.8f;
 	private TaskyPM pm;
-
 
 	public Task getTask() {
 		return task;

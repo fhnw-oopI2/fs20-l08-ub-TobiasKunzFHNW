@@ -109,8 +109,12 @@ public final class TaskyCLI {
 
 	private void get() {
 		long id = askForID();
-		Task task = repository.read(id);
-		System.out.println(task);
+		Optional<Task> optionalTask = repository.read(id);
+		while (optionalTask.isEmpty()) {
+			System.out.println("Invalid ID");
+			repository.read(askForID());
+		}
+		System.out.println(optionalTask.get());
 	}
 
 	private void update() {

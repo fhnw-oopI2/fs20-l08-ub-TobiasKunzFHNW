@@ -1,11 +1,7 @@
 package ch.fhnw.oop2.tasky.ui.Graphical;
 
-import ch.fhnw.oop2.tasky.model.Repository;
-import ch.fhnw.oop2.tasky.model.Task;
-import ch.fhnw.oop2.tasky.model.impl.SQLite;
+import ch.fhnw.oop2.tasky.model.TaskyPM;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;

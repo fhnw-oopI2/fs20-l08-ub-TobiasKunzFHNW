@@ -4,10 +4,7 @@ import ch.fhnw.oop2.tasky.model.Repository;
 import ch.fhnw.oop2.tasky.model.Task;
 import ch.fhnw.oop2.tasky.model.TaskData;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * In Memory Variante eines Repository. Diese Implementation basiert auf 
@@ -26,8 +23,8 @@ public class InMemoryMapRepository implements Repository {
 	}
 	
 	@Override
-	public Task read(long id) {
-		return allTasks.get(id);
+	public Optional<Task> read(long id) {
+		 return Optional.ofNullable(allTasks.get(id));
 	}
 
 	@Override

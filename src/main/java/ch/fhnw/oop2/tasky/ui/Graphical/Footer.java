@@ -1,5 +1,6 @@
 package ch.fhnw.oop2.tasky.ui.Graphical;
 
+import ch.fhnw.oop2.tasky.model.TaskyPM;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -24,11 +25,12 @@ public class Footer extends HBox {
 	}
 
 	private void layoutControls() {
-		getChildren().addAll(buttonNew, buttonRefresh);
 		buttonNew.setFont(Starter.BUTTON_FONT);
 		buttonRefresh.setFont(Starter.BUTTON_FONT);
 		buttonNew.setPrefWidth(200);
 		buttonRefresh.setPrefWidth(200);
+		getChildren().addAll(buttonNew, buttonRefresh);
+
 		setSpacing(10);
 		setPadding(new Insets(10));
 	}

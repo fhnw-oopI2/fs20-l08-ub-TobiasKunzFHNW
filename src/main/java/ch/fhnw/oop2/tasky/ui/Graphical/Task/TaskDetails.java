@@ -3,7 +3,7 @@ package ch.fhnw.oop2.tasky.ui.Graphical.Task;
 import ch.fhnw.oop2.tasky.model.State;
 import ch.fhnw.oop2.tasky.model.Task;
 import ch.fhnw.oop2.tasky.ui.Graphical.Starter;
-import ch.fhnw.oop2.tasky.ui.Graphical.TaskyPM;
+import ch.fhnw.oop2.tasky.model.TaskyPM;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -25,7 +25,6 @@ public class TaskDetails extends VBox {
 	private ComboBox<State> comboBoxState;
 	private Button buttonSave, buttonDelete;
 
-	private Task currentTask;
 	private TaskyPM pm;
 
 	public TaskDetails(TaskyPM pm) {

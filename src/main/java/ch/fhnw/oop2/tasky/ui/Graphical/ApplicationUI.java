@@ -1,14 +1,12 @@
 package ch.fhnw.oop2.tasky.ui.Graphical;
 
-import ch.fhnw.oop2.tasky.model.Repository;
 import ch.fhnw.oop2.tasky.model.State;
 import ch.fhnw.oop2.tasky.model.Task;
-import ch.fhnw.oop2.tasky.model.impl.SQLite;
+import ch.fhnw.oop2.tasky.model.TaskyPM;
 import ch.fhnw.oop2.tasky.ui.Graphical.Task.LaneGroup;
 import ch.fhnw.oop2.tasky.ui.Graphical.Task.TaskDetails;
 import javafx.application.Application;
 import javafx.beans.property.SimpleLongProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.layout.*;
@@ -18,8 +16,6 @@ public class ApplicationUI extends GridPane {
 	private Parent footer;
 	private Parent laneGroup;
 	private TaskyPM pm;
-	private static ObservableList<Task> tasks;
-	private static SimpleLongProperty selectedId = new SimpleLongProperty();
 
 	private static final int WIDTH_LANES = 60;
 	private static final int HEIGHT_FOOTER = 10;
@@ -32,8 +28,6 @@ public class ApplicationUI extends GridPane {
 		this.pm = pm;
 		initializeControls();
 		layoutControls();
-		pm.refreshTasks();
-		pm.selectTask(-1);
 	}
 
 	private void initializeControls() {

@@ -1,6 +1,7 @@
 package ch.fhnw.oop2.tasky.model;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Das Repository Interface. Alle Implementation eines Repositories müssen dieses Interface
@@ -30,7 +31,7 @@ public interface Repository {
 	 * @param id  Die ID der Task
 	 * @return  Die Task falls sie existiert, null sonst
 	 */
-	Task read(long id);
+	Optional<Task> read(long id);
 	
 	/**
 	 * Update einer Task. Eine Task kann nur angepasst werden, wenn sie auch

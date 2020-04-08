@@ -1,7 +1,7 @@
 package ch.fhnw.oop2.tasky.ui.Graphical.Task;
 
 import ch.fhnw.oop2.tasky.model.State;
-import ch.fhnw.oop2.tasky.ui.Graphical.TaskyPM;
+import ch.fhnw.oop2.tasky.model.TaskyPM;
 import javafx.scene.layout.*;
 
 import java.util.ArrayList;
