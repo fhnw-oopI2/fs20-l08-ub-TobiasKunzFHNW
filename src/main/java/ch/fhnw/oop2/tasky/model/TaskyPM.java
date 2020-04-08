@@ -5,6 +5,7 @@ import ch.fhnw.oop2.tasky.ui.Graphical.Task.TaskUi;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,7 @@ public class TaskyPM {
 	private StringProperty title = new SimpleStringProperty();
 	//Buttons
 	private StringProperty buttonNew = new SimpleStringProperty("New Task");
-	private StringProperty buttonRefresh = new SimpleStringProperty("Refresh");
+	private StringProperty buttonToggleSort = new SimpleStringProperty();
 	//Task
 	private LongProperty selectedTaskId = new SimpleLongProperty();
 	private StringProperty selectedTaskTitle = new SimpleStringProperty();
@@ -27,9 +28,15 @@ public class TaskyPM {
 	//Observable
 	private ObservableList<Task> tasks = FXCollections.observableArrayList();
 
+	private ObjectProperty<TaskComparator> taskSortProperty = new SimpleObjectProperty<>(TaskComparator.DUE);
+
 	public TaskyPM() {
 		refreshTasks();
 		selectTask(-1);
+	}
+
+	public ObjectProperty<TaskComparator> taskSortPropertyProperty() {
+		return taskSortProperty;
 	}
 
 	public String getTitle() {
@@ -56,10 +63,6 @@ public class TaskyPM {
 		return selectedTaskDate;
 	}
 
-	public State getSelectedTaskState() {
-		return selectedTaskState.get();
-	}
-
 	public ObjectProperty<State> selectedTaskStateProperty() {
 		return selectedTaskState;
 	}
@@ -72,10 +75,6 @@ public class TaskyPM {
 		return buttonNew;
 	}
 
-	public StringProperty buttonRefreshProperty() {
-		return buttonRefresh;
-	}
-
 	public void createNewTask() {
 		Task newTask = repository.create(new TaskData("", "", LocalDate.now(), State.TODO));
 		refreshTasks();
@@ -84,10 +83,10 @@ public class TaskyPM {
 
 	public void selectTask(long id) {
 		Optional<Task> optionalTask = repository.read(id);
-		optionalTask.ifPresentOrElse(this::selectTask,this::cleanSelection);
+		optionalTask.ifPresentOrElse(this::selectTask, this::cleanSelection);
 	}
 
-	private void selectTask(Task task){
+	private void selectTask(Task task) {
 		selectedTaskId.set(task.id);
 		selectedTaskTitle.set(task.data.title);
 		selectedTaskDesc.set(task.data.desc);
@@ -95,7 +94,7 @@ public class TaskyPM {
 		selectedTaskState.set(task.data.state);
 	}
 
-	private void cleanSelection(){
+	private void cleanSelection() {
 		selectedTaskId.set(-1);
 		selectedTaskTitle.set(null);
 		selectedTaskDesc.set(null);
@@ -104,7 +103,9 @@ public class TaskyPM {
 	}
 
 	public void refreshTasks() {
-		tasks.setAll(repository.read());
+		List<Task> newTasks = repository.read();
+		newTasks.sort(taskSortProperty.get().getComparator());
+		tasks.setAll(newTasks);
 	}
 
 	public List<TaskUi> getTasksByState(State state) {
