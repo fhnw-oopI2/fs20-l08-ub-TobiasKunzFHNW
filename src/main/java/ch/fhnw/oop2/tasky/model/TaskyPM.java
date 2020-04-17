@@ -14,11 +14,6 @@ import java.util.stream.Collectors;
 public class TaskyPM {
 	//Repo
 	private static Repository repository = new SQLite(SQLite.Database.REPOSITORY);
-	//General
-	private StringProperty title = new SimpleStringProperty();
-	//Buttons
-	private StringProperty buttonNew = new SimpleStringProperty("New Task");
-	private StringProperty buttonToggleSort = new SimpleStringProperty();
 	//Task
 	private LongProperty selectedTaskId = new SimpleLongProperty();
 	private StringProperty selectedTaskTitle = new SimpleStringProperty();
@@ -27,7 +22,6 @@ public class TaskyPM {
 	private ObjectProperty<State> selectedTaskState = new SimpleObjectProperty<>();
 	//Observable
 	private ObservableList<Task> tasks = FXCollections.observableArrayList();
-
 	private ObjectProperty<TaskComparator> taskSortProperty = new SimpleObjectProperty<>(TaskComparator.DUE);
 
 	public TaskyPM() {
@@ -39,9 +33,6 @@ public class TaskyPM {
 		return taskSortProperty;
 	}
 
-	public String getTitle() {
-		return title.get();
-	}
 
 	public long getSelectedTaskId() {
 		return selectedTaskId.get();
@@ -71,9 +62,6 @@ public class TaskyPM {
 		return tasks;
 	}
 
-	public StringProperty buttonNewProperty() {
-		return buttonNew;
-	}
 
 	public void createNewTask() {
 		Task newTask = repository.create(new TaskData("", "", LocalDate.now(), State.TODO));

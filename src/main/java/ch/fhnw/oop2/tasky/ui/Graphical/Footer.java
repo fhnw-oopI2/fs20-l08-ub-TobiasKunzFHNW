@@ -22,8 +22,7 @@ public class Footer extends HBox {
 	}
 
 	private void initializeControls() {
-		buttonNew = new Button();
-		buttonNew.textProperty().bind(pm.buttonNewProperty());
+		buttonNew = new Button("New Task");
 		buttonNew.setOnAction(b -> pm.createNewTask());
 		comboBoxSort = new ComboBox<>();
 		comboBoxSort.getItems().setAll(TaskComparator.values());
